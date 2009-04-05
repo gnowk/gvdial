@@ -23,13 +23,12 @@ GetOptions(
 );
 
 $rcfile ||= "$ENV{HOME}/.gvdialrc";
-usage() unless (-f $rcfile);
 
 ################################################
 # RC FILE
 ################################################
 my %rc;
-open(my $infile, $rcfile);
+open(my $infile, $rcfile) || die "error opening $rcfile: $!";
 while (<$infile>)
 {  
     chomp;        
@@ -49,7 +48,7 @@ my %params = (
 
 ################################################
 
-usage() unless ($params{from_num} && $params{out_num});
+usage() unless ($params{from_num} && $params{out_num} && -r $rcfile);
 
 my ($ua, $resp, $cookies);
 
