@@ -3,6 +3,7 @@
 use strict;
 use Getopt::Long;
 use LWP::UserAgent; 
+use User::pwent;
 
 ################################################
 # CONSTANTS
@@ -11,7 +12,10 @@ my $LOGIN_URL = 'https://www.google.com/accounts/ServiceLoginAuth?service=grandc
 my $VOICE_URL = 'https://www.google.com/voice/m';
 my $CALL_URL  = 'https://www.google.com/voice/call/connect/';
 
-my $COOKIES   = "$ENV{HOME}/.gvdial-cookies";
+my $pw = getpw($>);
+my $HOME = $pw->dir;  # don't use $ENV{HOME}, since it doesn't get updated when su is used without -
+
+my $COOKIES   = "$HOME/.gvdial-cookies";
 
 ################################################
 # ARGUMENTS
@@ -22,7 +26,7 @@ GetOptions(
     "conf:s" => \$rcfile,
 );
 
-$rcfile ||= "$ENV{HOME}/.gvdialrc";
+$rcfile ||= "$HOME/.gvdialrc";
 
 ################################################
 # RC FILE
